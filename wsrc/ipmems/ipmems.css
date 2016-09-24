@@ -1,0 +1,21 @@
+* {
+	color: aliceblue;
+	font-family: sans-serif;
+	font-size: small;
+}
+
+img {
+	border-color: aliceblue;
+}
+
+body {
+	background-color: slategray;
+}
+
+.head {
+	background-color: darkslategray;
+}
+
+.tinyFont {
+	font-size: x-small;
+}

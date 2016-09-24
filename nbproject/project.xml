@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.java.j2seproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
+            <name>ipmems</name>
+            <source-roots>
+                <root id="src.dir"/>
+                <root id="src.ssrc.dir" name="Script Packages"/>
+                <root id="src.scsrc.dir" name="Script Classes Packages"/>
+                <root id="src.wsrc.dir" name="Web Script Packages"/>
+                <root id="src.wcsrc.dir" name="Web Script Classes Packages"/>
+                <root id="src.rata.dir" name="RATA Packages"/>
+                <root id="src.rcli.dir" name="RCLI Packages"/>
+                <root id="src.ipgroovy.dir" name="ipGroovy Packages"/>
+                <root id="src.iprhino.dir" name="ipRhino Packages"/>
+                <root id="src.ipscada.dir" name="ipSCADA Packages"/>
+                <root id="src.hsqlsrv.dir" name="HSQLSRV Packages"/>
+                <root id="src.swingmems.dir" name="SwingMems Packages"/>
+            </source-roots>
+            <test-roots/>
+        </data>
+        <references xmlns="http://www.netbeans.org/ns/ant-project-references/1"/>
+    </configuration>
+</project>

@@ -1,0 +1,6 @@
+Usage: java -jar ipmems.jar [<options>]
+
+Options:
+	-z --tz         Time zone
+	-l --locale     Locale
+	-q --level      Logging level

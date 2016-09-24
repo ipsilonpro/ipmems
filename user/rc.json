@@ -1,0 +1,41 @@
+{
+	"hsqlServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["org.ipsilon.ipmems.db.file.IpmemsDbFileServer", []]
+	},
+	"loadScripts": {
+		"class": "org.ipsilon.ipmems.scripting.IpmemsScriptEngines",
+		"method": "loadScripts"
+	},
+	"protServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["org.ipsilon.ipmems.prot.IpmemsProtServer", []]
+	},
+	"scheduler": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["org.ipsilon.ipmems.sch.IpmemsStdSchedulerService", []]
+	},
+	"rcliServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["com.ipsilon.ipmems.rcli.IpmemsRcliServer", []]
+	},
+	"rataServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["com.ipsilon.ipmems.rata.IpmemsRataServer", []]
+	},
+	"dbfiServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["org.ipsilon.ipmems.dbfi.IpmemsDbfiServer", []]
+	},
+	"webServer": {
+		"class": "org.ipsilon.ipmems.Ipmems",
+		"method": "startService",
+		"args": ["org.ipsilon.ipmems.web.IpmemsWebServer", []]
+	}
+}

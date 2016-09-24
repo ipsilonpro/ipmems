@@ -1,0 +1,17 @@
+Usage: java -cp ipmems.jar com.ipsilon.ipmems.rcli.IpmemsRcliInvoker <options>
+
+Options:
+    -z --tz         Time zone
+    -l --locale     Locale
+    -q --level      Logging level
+    -d --data       Data directory
+    -t --host       RCLI target host
+    -p --port       RCLI port
+    -f --file       Read the properties from file
+    -r              Readline flag
+    -T --proxyType  Proxy type (socks, http)
+    -H --proxyHost  Proxy host (default: localhost)
+    -P --proxyPort  Proxy port (default: 10080)
+    -m --mode       Client mode
+    -c --conf       Inline configuration (in JSON format)
+    -h --help       Shows this help screen

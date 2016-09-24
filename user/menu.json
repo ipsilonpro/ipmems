@@ -1,0 +1,69 @@
+{
+	"showLogViewer": {
+		"label": "Show log viewer",
+		"class": "org.ipsilon.ipmems.swingmems.IpmemsDefaultActions",
+		"method": "showLogViewer",
+		"style": "bold"
+	},
+	"sepScripts": {
+		"label": "-"
+	},
+	"openScript": {
+		"label": "Open script...",
+		"class": "org.ipsilon.ipmems.swingmems.IpmemsDefaultActions",
+		"method": "openScript"
+	},
+	"openWebScript": {
+		"label": "Open web script...",
+		"class": "org.ipsilon.ipmems.swingmems.IpmemsDefaultActions",
+		"method": "openWebScript"
+	},
+	"sepRcliConnect": {
+		"label": "-"
+	},
+	"rcliConnect": {
+		"label": "RCLI connect...",
+		"class": "org.ipsilon.ipmems.net.IpmemsTcpClientUtil",
+		"method": "start",
+		"args": [
+			"com.ipsilon.ipmems.rcli.IpmemsGuiRcliClient",
+			"rcliServer"
+		],
+		"evar": "rcliServer"
+	},
+	"rataConnect": {
+		"label": "RATA connect...",
+		"class": "org.ipsilon.ipmems.net.IpmemsTcpClientUtil",
+		"method": "start",
+		"args": [
+			"com.ipsilon.ipmems.rata.IpmemsGuiRataClient",
+			"rataServer"
+		],
+		"evar": "rataServer"
+	},
+	"sepClear": {
+		"label": "-"
+	},
+	"clearErrState": {
+		"label": "Clear error state",
+		"class": "org.ipsilon.ipmems.swingmems.IpmemsTrayIcon",
+		"method": "clearErrorStatus"
+	},
+	"sepRestartScheduler": {
+		"label": "-"
+	},
+	"adminFrame": {
+		"label": "Administration window",
+		"class": "org.ipsilon.ipmems.swingmems.IpmemsAdmFrame",
+		"method": "showFrame"
+	},
+	"sepExit": {
+		"label": "-"
+	},
+	"exit": {
+		"label": "Exit",
+		"class": "java.lang.System",
+		"method": "exit",
+		"args": [0]
+	}
+}

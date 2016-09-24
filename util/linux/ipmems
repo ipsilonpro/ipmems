@@ -1,0 +1,47 @@
+#!/bin/sh
+
+BASEDIR="$(dirname $0)"
+PIDFILE="$BASEDIR/ipmems.pid"
+
+case "$1" in
+	start)
+		if [ -e "$PIDFILE" ]
+		then
+			$0 restart
+		else
+			echo -n "Starting IPMEMS........."
+			java -jar "$BASEDIR/ipmems.jar" &
+			echo "OK."
+		fi
+		;;
+	stop)
+		echo -n "Stopping IPMEMS........."
+		if [ -e "$PIDFILE" ]
+		then
+			if [[ $(ps -p $(cat $PIDFILE)) == *java* ]]
+			then
+				kill -s TERM $(cat "$PIDFILE")
+				echo "OK."
+			else
+				rm "$PIDFILE"
+				echo "DELETED."
+			fi
+		else
+			echo "nothing to stop."
+		fi
+		;;
+	restart)
+		$0 stop
+		echo -n "Waiting for terminate..."
+		while [ -e "$PIDFILE" ]
+		do
+			sleep 1
+		done
+		echo "OK."
+		$0 start
+		;;
+	*)
+		echo "Usage: ipmems start|stop|restart"
+		exit 1
+		;;
+esac

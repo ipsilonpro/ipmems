@@ -1,0 +1,40 @@
+body {
+	font-family: fantasy;
+	background-color: azure;
+}
+
+table {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-collapse: collapse;
+	border: solid #243024;
+}
+
+table th,td {
+	margin: 0px 0px 0px 0px;
+	padding: 4px 4px 4px 4px;
+	border: solid #243024;
+	border-right-width: 1px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+	border-top-width: 1px;
+}
+
+table.pumps th {
+	background-color: skyblue;
+}
+
+table.valves th {
+	background-color: indianred;
+}
+
+table.results th {
+	background-color: greenyellow;
+}
+
+table tr.terminator {
+	border: solid black;
+	border-width: 0px 0px 3px 0px;
+}

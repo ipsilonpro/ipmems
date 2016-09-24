@@ -1,0 +1,300 @@
+BUILD 11488
+--------------------------------------------------------------------------------
+* Migrate: to the apache commons MethodUtils (modified) and ConstructorUtils
+
+BUILD 11471
+--------------------------------------------------------------------------------
+* Changed: DBFI protocol (makes an incompatibility for previous versions)
+
+BUILD 10537
+--------------------------------------------------------------------------------
+* Added: sysprops' key types bacame more natural
+
+BUILD 10533
+--------------------------------------------------------------------------------
+* Fixed: locale loading sequence
+* Added: Spanish localization data for the tray menu
+
+Build 9374
+--------------------------------------------------------------------------------
+* Fixed: scheduler configuration loading problem
+* Added: IpmemsDbMap class
+
+Build 9354
+--------------------------------------------------------------------------------
+* Dropped: dependence of Apache Commons CLI library
+* Optimized: faster startup
+
+Build 9340
+--------------------------------------------------------------------------------
+* Optimized: multi-thread Protocol Utility Library synchronization
+
+Build 9339
+--------------------------------------------------------------------------------
+* Added: guard-functions in Protocol Utility Library
+* Fixed: multi-thread Protocol Utility Library synchronization
+* Added: Community Edition (CE), Enterprise Edition (EE)
+* Added: IPMEMS full version now suppports the edition part
+
+Build 9244
+--------------------------------------------------------------------------------
+* Added: 64-bit hash-function for ID calculations
+* Optimized: IpmemsDbAddress class
+* Optimized: sysProps calculations (loop instead of recursion)
+* Removed: TELNET server loading by default
+* Added: web-server sub-domains in subdirectories
+
+Build 9172
+--------------------------------------------------------------------------------
+* Changed: XML trigger naming convention has changed: *.xml.<ext>
+
+Build 9169
+--------------------------------------------------------------------------------
+* Fixed: getFormData variable binding in iprhino
+* Fixed: getFormData variable binding in ipgroovy
+
+Build 9162
+--------------------------------------------------------------------------------
+* Fixed: unique constraint in the Command Registry
+* Fixed: unique constraint in the Database Logging
+* Added: event-driven TCP servers (RCLI, HTTP, HTTPS, DBFI, TELNET)
+* Added: event-driven DBFI server
+* Optimized: IPMEMS data store classes
+* Optimized: iprhino variable bindings
+* Added: IpmemsDbLogging interface implementation for HSQLDB
+* Added: DBFI event listener example
+* Added: DB synchronization example
+
+Files affected:
+	ipmems.jar
+	plugins/hsqlsrv.jar
+	plugins/ipgroovy.jar
+	plugins/iprhino.jar
+	scripts/config_demo.groovy
+	web/*
+
+Build 9083
+--------------------------------------------------------------------------------
+* Fixed: system properties overriding error
+
+Build 9078
+--------------------------------------------------------------------------------
+* Added: Command Registry
+* Added: remote control example
+* Changed: init.sql structure
+
+Files affected:
+	ipmems.jar
+	plugins/hsqlsrv.jar
+	scripts/config_demo.groovy
+	web/*
+
+Build 9020
+--------------------------------------------------------------------------------
+* Added: Command registry put/get commands implementation
+* Improved: protocol parsing library (wrap methods instead of allocating buffers)
+* Added: SVG animation example
+* Fixed: protocol parsing library error in parameter passing
+* Fixed: uf.groovy ipmems_tcp_init error
+* Fixed: Web-server XML trigger processing issue (null pointer exception)
+
+Files affected:
+	ipmems.jar
+	plugins/hsqlsrv.jar
+	scripts/uf.groovy
+
+Build 8972
+--------------------------------------------------------------------------------
+* Fixed: XML-triggers in Web-server
+* Fixed: Web-server encoding file issue
+
+Build 8945
+--------------------------------------------------------------------------------
+* Added: full support of multiple scripting languages
+* Added: Groovy-plugin ipgroovy
+* Added: JavaScript-plugin iprhino
+* Added: partial synchroniztion in IO tasks
+* Added: Column/Line number tracking in Script Editor
+* Added: auto-selection of syntax colouring in Script Editor
+* Added: RCLI server now supports multiple scripting engines
+* Added: RCLI clients (console, GUI) now support multiple scripting engines
+* Fixed: RCLI GUI client throws an error in Windows 7 environment
+* Fixed: AWT thread synchronization in popup menus
+* Renamed: package names in public domain (com --> org)
+
+Files affected:
+	ALL FILES
+
+Build 8704
+--------------------------------------------------------------------------------
+* Improved: resource loading
+* Improved: dynamic tray menu
+* Added: services and service listeners
+* Added: error colouring in RCLI GUI client window
+
+Build 8636
+--------------------------------------------------------------------------------
+* Removed: unused lines in psch.groovy
+
+Files affected:
+	scripts/psch.groovy
+	scripts/uf.groovy
+	scripts/lib.groovy
+
+Build 8619
+--------------------------------------------------------------------------------
+* Fixed: http form attachment encoding
+
+Files affected:
+	lib/groovy-all.jar
+	plugins/groovymems.jar
+
+Build 8567
+--------------------------------------------------------------------------------
+* Added: post http method handler in embedded web server
+* Added: memlogs.groovy, shell.groovy
+
+Files affected:
+	plugins/groovymems.jar
+
+Build 8399
+--------------------------------------------------------------------------------
+* Added: memlogs.groovy to web directory
+
+Build 8356
+--------------------------------------------------------------------------------
+* Fix: RCLI output stream redirecting to the main shell instead of the current
+       one when 'ef' command being executed
+
+Build 8353
+--------------------------------------------------------------------------------
+* Fix: scheduler task queue synchronization crash
+* Readded: underlined error records in IPMEMS log viewer
+
+Files affected:
+	ipmems.jar
+	plugins/groovymems.jar
+
+Build 8348
+--------------------------------------------------------------------------------
+* Fix: class loader mismatch in ipmems task delegate
+
+Files affected:
+	ipmems.jar
+	plugins/groovymems.jar
+
+Build 8347
+--------------------------------------------------------------------------------
+* Fix: scheduler task invocation errors (Timur Abdulmenov)
+
+Build 8344
+--------------------------------------------------------------------------------
+* Fix: bug with ipmems.properties
+
+Build 8337
+--------------------------------------------------------------------------------
+* Fix: bug with a graphical client command-line invocation
+
+Files affected:
+	ipmems.jar
+
+Build 8330
+--------------------------------------------------------------------------------
+* Improved: the source code have been modularized into plugins
+* Improved: RSyntaxTextArea code editor instead of Groovy one
+* Improved: boot from json file instead of properties file
+* Added: parametrized services through json parameters
+* Improved: full flushing Web-server
+* Added: license files in special license directory
+* dropped groovy-all.jar dependence
+* using original Apache commons-cli library instead of Groovy one
+* using google-gson JSON library instead of Groovy one
+* rewriting user I/O library for file and stream operations
+* creating the class IpmemsScriptBinding as a first citizen of new
+  scripting engine
+* creating the abstract menu interfaces (dynamic menus will be
+  available in next release)
+
+Files affected:
+	ipmems.jar
+	ipmems.properties
+	rc.json
+	commons-cli.jar
+	gson.jar
+	lib/groovy-all.jar (only moving)
+	lib/hsqldb.jar (only moving)
+	lib/sqltool.jar (only moving)
+	lib/rsyntaxtextarea.jar
+	plugins/hsqlsrv.jar
+	plugins/logutils.jar
+	plugins/swingmems.jar
+	plugins/groovymems.jar
+	scripts/lib.groovy
+	scripts/dbutil.groovy
+	scripts/uf.groovy
+	scripts/psch.groovy
+
+Build 8185
+--------------------------------------------------------------------------------
+* Added: allowed to reinitialize the file log (intended for Web designers)
+
+Build 8179
+--------------------------------------------------------------------------------
+* Fix: whole word searching
+
+Build 8178
+--------------------------------------------------------------------------------
+* Added: Log record finder dialog (Reporter: Timur Abdulmenov)
+
+Files affected:
+	ipmems.jar
+	plugins/swingutil.jar
+
+Build 8146 (2011-11-03)
+--------------------------------------------------------------------------------
+* Fix: IPMEMS Log Viewer log file location error
+
+Files affected:
+	plugins/swingutil.jar
+
+Build 8144 (2011-11-03)
+--------------------------------------------------------------------------------
+* Improvement: moving ipmems.log to @{jarDir} (Reporter: Timur Abdulmenov)
+
+Files affected:
+	ipmems.jar
+
+Build 8142 (2011-11-03)
+--------------------------------------------------------------------------------
+* Dropping two-level logging subsystem
+* Web-server init trigger bug fix (Reporter: Andrey Oparkin)
+* RCLI server synchronization bug fix
+* Some logging subsystem optimizations
+* "fine", "finer", "finer" groovy closures added
+
+Files affected: 
+	rc.properties
+	ipmems.properties
+	ipmems.jar
+	plugins/hsqlsrv.jar
+	plugins/swingutil.jar
+
+
+Build 8035 (2011-11-01)
+--------------------------------------------------------------------------------
+* Dropping all the SWING- or AWT-specific classes to plugins
+* Removing all the enums such as PasswordInputType or RcliClientType
+* Removing the log records limit in IPMEMS log viewer
+* Preparing to compile the IPMEMS kernel on Android (API Level 9 or higher) 
+  and Zero platforms
+
+
+Build 7956 (2011-10-31)
+--------------------------------------------------------------------------------
+* Migrating to own logging subsystem (com.ipsilon.ipmems.logging.*)
+* The RCLI GUI client synchronization techniques were optimized
+* All the TCP servers (RCLI, WEB, TELNET, DBFI) are now inherited from
+  com.ipsilon.ipmems.util.IpmemsAbstractTcpServer
+* rc.properties parametrization support added
+* Server loading process changed to call 
+  IpmemsAbstractTcpServer.startServer(<server class name>)

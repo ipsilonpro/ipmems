@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ipmems" default="default" basedir=".">
+    <description>Builds, tests, and runs IPMEMS.</description>
+	<loadproperties srcfile="nbproject/project.properties"/>
+	<loadproperties srcfile="props/system.properties" encoding="UTF-8" prefix="Ipmems"/>
+	<path id="ipmems-default">
+		<path location="${dist.dir}/ipmems.jar"/>
+		<path path="${javac.classpath}"/>
+	</path>
+	<path id="plugin-with-gui">
+		<path refid="ipmems-default"/>
+		<path location="${dist.dir}/plugins/swingmems.jar"/>
+	</path>
+	<condition property="Ipmems.Desktop">
+		<equals arg1="${Ipmems.OsType}" arg2="desktop"/>
+	</condition>
+	<condition property="mustCreateProgramKey">
+		<not><available file="user/ipmems.ss"/></not>
+	</condition>
+	<target name="ipmems-program-key" if="mustCreateProgramKey">
+		<genkey alias="ipmems" 
+			dname="cn=Dmitry Ovchinnikov and Yury Eremeyev,ou=ipsilon-pro LLC,o=ipsilon-pro LLC,c=RU"
+			keystore="user/ipmems.ss" validity="3600"
+			keypass="${Ipmems.SecureKeyPassword}"
+			storepass="${Ipmems.SecureKeyPassword}"/>
+		<propertyfile file="user/ipmems.properties">
+			<entry key="secureKeyPassword" operation="=" 
+				type="string" value="${Ipmems.SecureKeyPassword}"/>
+		</propertyfile>
+	</target>
+	<!-- PROPERTIES CHANGE TARGETS -->
+	<target name="change-version">
+		<propertyfile file="props/system.properties">
+			<entry key="version" operation="+"
+				type="int" default="1001001" value="1" pattern="#"/>
+			<entry key="build" operation="+"
+				type="int" default="1001001" value="1" pattern="#"/>
+			<entry key="date" operation="="
+				type="date" pattern="yyyy-MM-dd" value="now"/>
+		</propertyfile>
+	</target>
+	<!-- COPY RESOURCES TARGETS -->
+	<target name="copy-user">
+		<copy todir="${dist.dir}" includeemptydirs="true">
+			<fileset dir="user"/>
+			<fileset dir="util/${Ipmems.OsTarget}"/>
+		</copy>
+		<chmod dir="${dist.dir}" perm="777">
+			<include name="**/*.sh"/>
+			<include name="ipmems"/>
+		</chmod>
+		<copy todir="${dist.dir}/scripts"><fileset dir="ssrc"/></copy>
+		<copy todir="${dist.dir}/web"><fileset dir="wsrc"/></copy>
+		<mkdir dir="scsrc"/>
+		<copy todir="${dist.dir}/scripts/classes">
+			<fileset dir="scsrc"/>
+		</copy>
+		<mkdir dir="wcsrc"/>
+		<copy todir="${dist.dir}/web/classes">
+			<fileset dir="wcsrc"/>
+		</copy>
+	</target>
+	<!-- PLUGINS TARGETS -->
+	<target name="plugin-common">
+		<mkdir dir="${dist.dir}/plugins/${plugin.name}"/>
+		<javac destdir="${dist.dir}/plugins/${plugin.name}"
+			srcdir="plugins/${plugin.name}" excludes="**/package-info.java"
+			debug="${Ipmems.Debug}" optimize="true"
+			classpathref="${plugin.path}" source="1.6" target="1.6">
+				<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<copy includeemptydirs="false" todir="${dist.dir}/plugins/${plugin.name}">
+			<fileset dir="plugins/${plugin.name}" excludes="**/*.java"/>
+		</copy>
+		<mkdir dir="metainfs/${plugin.name}"/>
+		<jar compress="true" destfile="${dist.dir}/plugins/${plugin.name}.jar"
+			basedir="${dist.dir}/plugins/${plugin.name}" level="9">
+			<metainf dir="metainfs/${plugin.name}"/>
+		</jar>
+		<delete dir="${dist.dir}/plugins/${plugin.name}"/>
+	</target>
+	<target name="plugin-hsql">
+		<property name="plugin.name" value="hsqlsrv"/>
+		<property name="plugin.path" value="ipmems-default"/>
+		<antcall target="plugin-common"/>
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="lib/hsqldb/lib">
+				<include name="hsqldb.jar"/>
+				<include name="sqltool.jar"/>
+			</fileset>
+		</copy>
+		<copy file="lib/hsqldb/hsqldb_lic.txt" 
+			tofile="${dist.dir}/license/HSQLDB-LICENSE.txt"/>
+		<copy file="lib/hsqldb/hypersonic_lic.txt" 
+			tofile="${dist.dir}/license/HYPERSONIC-LICENSE.txt"/>
+	</target>
+	<target name="plugin-swingmems" unless="${Ipmems.Console}">
+		<property name="plugin.name" value="swingmems"/>
+		<property name="plugin.path" value="ipmems-default"/>
+		<antcall target="plugin-common"/>
+		<copy file="lib/rsyntaxtextarea.jar" todir="${dist.dir}/lib"/>
+		<copy file="lib/RSyntaxTextArea.License.txt"
+			tofile="${dist.dir}/license/RSYNTAXTEXTAREA-LICENSE.txt"/>
+	</target>
+	<target name="plugin-ipgroovy">
+		<property name="plugin.name" value="ipgroovy"/>
+		<property name="plugin.path" value="ipmems-default"/>
+		<antcall target="plugin-common"/>
+		<copy file="lib/groovy/embeddable/groovy-all.jar" 
+			todir="${dist.dir}/lib"/>
+		<copy todir="${dist.dir}/license">
+			<fileset dir="lib/groovy" includes="*-LICENSE.txt"/>
+		</copy>
+		<copy file="lib/groovy/LICENSE.txt" 
+			tofile="${dist.dir}/license/GROOVY-LICENSE.txt"/>
+	</target>
+	<target name="plugin-iprhino">
+		<property name="plugin.name" value="iprhino"/>
+		<property name="plugin.path" value="ipmems-default"/>
+		<antcall target="plugin-common"/>
+		<copy file="lib/rhino/js.jar" todir="${dist.dir}/lib"/>
+		<copy file="lib/rhino/LICENSE.txt" tofile="${dist.dir}/license/RHINO-LICENSE.txt"/>
+	</target>
+	<target name="plugin-ipscada" unless="${Ipmems.Console}" if="${Ipmems.Ipscada}">
+		<property name="plugin.name" value="ipscada"/>
+		<property name="plugin.path" value="plugin-with-gui"/>
+		<antcall target="plugin-common"/>
+	</target>
+	<target name="plugin-rcli" unless="${Ipmems.Console}">
+		<property name="plugin.name" value="rcli"/>
+		<property name="plugin.path" value="plugin-with-gui"/>
+		<antcall target="plugin-common"/>
+	</target>
+	<target name="plugin-rata" unless="${Ipmems.Console}">
+		<property name="plugin.name" value="rata"/>
+		<property name="plugin.path" value="plugin-with-gui"/>
+		<antcall target="plugin-common"/>
+	</target>
+	<!-- MAKE PLUGINS -->
+	<target name="make-plugins">
+		<antcall target="plugin-ipgroovy"/>
+		<antcall target="plugin-hsql"/>
+		<antcall target="plugin-swingmems"/>
+		<antcall target="plugin-rcli"/>
+		<antcall target="plugin-rata"/>
+		<antcall target="plugin-ipscada"/>
+		<antcall target="plugin-iprhino"/>
+	</target>
+	<!-- MAKE DISTRIBUTION -->
+	<target name="make-d-zip">
+		<zip compress="true" level="9" destfile="build/ipmems-${Ipmems.build}.zip">
+			<zipfileset prefix="ipmems" dir="${dist.dir}" filemode="777">
+				<include name="**/*.sh"/>
+				<include name="ipmems"/>
+			</zipfileset>
+			<zipfileset prefix="ipmems" dir="${dist.dir}">
+				<exclude name="**/*.sh"/>
+				<exclude name="ipmems"/>
+			</zipfileset>
+		</zip>
+	</target>
+	<target name="make-d-tgz">
+		<tar compression="gzip" destfile="build/ipmems-${Ipmems.build}.tar.gz">
+			<tarfileset prefix="ipmems" dir="${dist.dir}">
+				<exclude name="**/*.sh"/>
+				<exclude name="ipmems"/>
+			</tarfileset>
+			<tarfileset prefix="ipmems" dir="${dist.dir}" filemode="777">
+				<include name="**/*.sh"/>
+				<include name="ipmems"/>
+			</tarfileset>
+		</tar>
+	</target>
+	<!-- BUILD TARGETS -->
+	<target name="mkjar">
+		<jar compress="true" destfile="${dist.jar}" basedir="build/classes" level="9">
+			<service type="com.ipsilon.ipmems.rcli.IpmemsRcliClient"
+				provider="com.ipsilon.ipmems.rcli.IpmemsConsoleRcliClient"/>
+			<service type="com.ipsilon.ipmems.rata.IpmemsRataClient"
+				provider="com.ipsilon.ipmems.rata.IpmemsConsoleRataClient"/>
+			<manifest>
+				<attribute name="Main-Class" value="org.ipsilon.ipmems.Ipmems"/>
+				<attribute name="Created-By" value="Ipsilon-Pro LLC"/>
+				<attribute name="Specification-Title" value="${Ipmems.version}"/>
+				<attribute name="Specification-Version" value="${Ipmems.build}"/>
+				<attribute name="Implementation-Title" value="IPMEMS"/>
+				<attribute name="Implementation-Version" value="${Ipmems.date}"/>
+				<attribute name="Implementation-Vendor" value="Ipsilon-Pro LLC"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="jar-desktop" if="Ipmems.Desktop">
+		<mkdir dir="build/classes"/>
+		<javac destdir="build/classes" srcdir="${src.dir}"
+			classpath="${javac.classpath}"
+			source="1.6" target="1.6" debug="${Ipmems.Debug}">
+				<exclude name="**/package-info.java"/>
+				<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<delete dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<copy includeemptydirs="false" todir="build/classes">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<antcall target="mkjar"/>
+		<delete dir="build/classes"/>
+		<mkdir dir="${dist.dir}/lib"/>
+		<mkdir dir="${dist.dir}/license"/>
+		<antcall target="make-plugins"/>
+		<antcall target="copy-user"/>
+		<antcall target="sign-ipmems"/>
+		<antcall target="make-d-${Ipmems.DT}"/>
+	</target>
+	<target name="jar" depends="change-version">
+		<resourcecount property="Ipmems.Lines">
+			<tokens>
+				<concat>
+					<filterchain>
+						<stripjavacomments/>
+						<tokenfilter>
+							<ignoreblank/>
+							<linetokenizer/>
+						</tokenfilter>
+					</filterchain>
+					<fileset dir=".">
+						<exclude name="**/package-info.java"/>
+						<include name="**/*.java"/>
+					</fileset>
+				</concat>
+			</tokens>
+		</resourcecount>
+		<resourcecount property="Ipmems.Classes">
+			<fileset dir=".">
+				<exclude name="**/package-info.java"/>
+				<include name="**/*.java"/>
+			</fileset>
+		</resourcecount>
+		<echo message="Lines: ${Ipmems.Lines}"/>
+		<echo message="Classes: ${Ipmems.Classes}"/>
+		<antcall target="jar-desktop"/>
+		<tar compression="gzip"	destfile="build/ipmems-src-${Ipmems.build}.tar.gz">
+			<tarfileset dir="${src.dir}" prefix="main">
+			</tarfileset>
+			<tarfileset dir="plugins" prefix="plugins">
+			</tarfileset>
+		</tar>
+	</target>
+	<target name="clean" depends="ipmems-program-key">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+	<!-- RUN -->
+	<target name="run">
+		<loadproperties srcfile="nbproject/project.properties"/>
+		<loadproperties srcfile="props/system.properties" encoding="UTF-8" prefix="Ipmems"/>
+		<antcall target="copy-user"/>
+		<java dir="${dist.dir}" jar="${dist.dir}/ipmems.jar" args="${Ipmems.Args}"/>
+	</target>
+	<!-- DEBUG -->
+	<target name="debug">
+		<loadproperties srcfile="nbproject/project.properties"/>
+		<loadproperties srcfile="props/system.properties" encoding="UTF-8" prefix="Ipmems"/>
+		<antcall target="copy-user"/>
+		<java dir="${dist.dir}" jar="${dist.dir}/ipmems.jar" args="${Ipmems.Args}">
+			<jvmarg value="-Xdebug"/>
+			<jvmarg value="-Xnoagent"/>
+			<sysproperty key="java.compiler" value="NONE"/>
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,address=8888,suspend=y"/>
+		</java>
+	</target>
+	<!-- SIGN JARS -->
+	<target name="sign-ipmems">
+		<signjar alias="ipmems"	keypass="${Ipmems.SecureKeyPassword}" storepass="${Ipmems.SecureKeyPassword}" keystore="user/ipmems.ss">
+			<fileset dir="${dist.dir}">
+				<include name="ipmems.jar"/>
+				<include name="plugins/**/*.jar"/>
+			</fileset>
+		</signjar>
+	</target>
+	<!-- PROFILE -->
+	<target name="profile">
+		<loadproperties srcfile="nbproject/project.properties"/>
+		<loadproperties srcfile="props/system.properties" encoding="UTF-8" prefix="Ipmems"/>
+		<antcall target="copy-user"/>
+		<java dir="${dist.dir}" jar="${dist.dir}/ipmems.jar" args="${Ipmems.Args}"/>
+	</target>
+	<!-- JAVADOC -->
+	<target name="javadoc">
+		<delete dir="javadoc" failonerror="false"
+			quiet="true" includeemptydirs="true"/>
+		<javadoc author="ipsilon-pro LLC" charset="UTF-8"
+			header="IPMEMS Build ${Ipmems.build}"
+			footer="Copyright (c) 2011 ipsilon-pro LLC"
+			windowtitle="IPMEMS Build ${Ipmems.build} API documentation"
+			classpath="${javac.classpath}" destdir="javadoc"
+			docencoding="UTF-8" doctitle="IPMEMS API documentation"
+			encoding="UTF-8">
+			<sourcepath path="${src.dir}"/>
+			<sourcepath path="plugins/hsqlsrv"/>
+			<sourcepath path="plugins/ipgroovy"/>
+			<sourcepath path="plugins/iprhino"/>
+			<sourcepath path="plugins/ipscada"/>
+			<sourcepath path="plugins/rata"/>
+			<sourcepath path="plugins/rcli"/>
+			<sourcepath path="plugins/swingmems"/>
+			<link href="http://download.oracle.com/javase/6/docs/api/"
+				packagelisturl="http://download.oracle.com/javase/6/docs/api/"/>
+			<link href="http://groovy.codehaus.org/gapi/"
+				packagelisturl="http://groovy.codehaus.org/gapi/"/>
+			<link href="http://www-archive.mozilla.org/rhino/apidocs/"
+				packagelisturl="http://www-archive.mozilla.org/rhino/apidocs/"/>
+		</javadoc>
+		<zip compress="true" level="9"
+			basedir="javadoc" destfile="build/ipmems-${Ipmems.build}-doc.zip"/>
+		<exec executable="firefox">
+			<arg value="javadoc/index.html"/>
+		</exec>
+	</target>
+</project>
